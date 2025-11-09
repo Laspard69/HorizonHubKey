@@ -47,6 +47,33 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* Notification banner */
+  #notify {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #ff4d4d, #b30000);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 0 15px rgba(255,77,77,0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.6s ease;
+  }
+  #notify.show {
+    top: 25px;
+    opacity: 1;
+  }
+  
+  /* Add a style for the redirect notification */
+  #notify.redirect {
+    background: linear-gradient(90deg, #3498db, #6dd5fa);
+    box-shadow: 0 0 15px rgba(52,152,219,0.5);
+  }
+
   /* Animations */
   .fade-in-up {
     opacity: 0;
@@ -152,13 +179,13 @@
     transform: translateY(0);
   }
 
-  /* Highlight for Linkvertise */
-  .linkvertise-card {
+  /* Highlight for Lootlabs (now the primary card) */
+  .highlight-card {
     border: 3px solid #9b59b6;
     box-shadow: 0 0 25px rgba(155,89,182,0.6);
     position: relative;
   }
-  .linkvertise-card::before {
+  .highlight-card::before {
     content: "EASY & FAST";
     position: absolute;
     top: 8px;
@@ -173,15 +200,11 @@
     z-index: 3;
     box-shadow: 0 0 10px rgba(52,152,219,0.6);
   }
-  .linkvertise-card::after {
-    background: rgba(0,0,0,0.4);
-  }
-  .linkvertise-card:hover::before {
+  .highlight-card:hover::before {
     transform: translateX(-50%) scale(1.05);
   }
 
-  /* Bottom "BEST" Tag */
-  .linkvertise-card .best-tag {
+  .highlight-card .best-tag {
     position: absolute;
     bottom: 8px;
     right: 10px;
@@ -194,40 +217,72 @@
     box-shadow: 0 0 10px rgba(155,89,182,0.6);
   }
 
+  /* Discontinued tag */
+  .discontinued-tag {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    background: linear-gradient(90deg, #ff4d4d, #b30000);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255,77,77,0.6);
+  }
+  .discontinued-tag::after {
+    content: "No longer supported";
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 5px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s ease;
+  }
+  .discontinued-tag:hover::after {
+    opacity: 1;
+    bottom: 140%;
+  }
 </style>
 </head>
 <body>
-  <!-- Loader -->
   <div id="loader"><div class="spinner"></div></div>
 
-  <!-- Main Content -->
+  <div id="notify">?? This checkpoint is no longer supported.</div>
+
   <h1 class="title fade-in-up">Horizon Hub</h1>
   <h2 class="subtitle fade-in-up">Select Checkpoint</h2>
   <p class="description fade-in-up">
     Choose a checkpoint to get your key.<br>
-    You can proceed via <b>Linkvertise</b> or <b>Work Ink</b>.
+    You can proceed via <b>Lootlabs</b> or <b>Linkvertise</b>.
   </p>
 
   <div class="checkpoint-container">
-    <!-- Linkvertise FIRST -->
-    <div class="checkpoint-card linkvertise-card"
-      style="background-image: url('https://media.licdn.com/dms/image/v2/D4E0BAQGbZqvPriyjiw/company-logo_200_200/company-logo_200_200/0/1701861184487/linkvertise_logo?e=2147483647&v=beta&t=z2G7POdRWNRnXfjAvg-HGrn4qms6dkRkxRW2MfBzEhE');"
-      data-url="https://ads.luarmor.net/get_key?for=Horizon_Hub_Linkvertise-GtiNyQRETJNr">
-      <div class="checkpoint-content">
-        <div class="checkpoint-name">Linkvertise</div>
-        <div class="duration">1 Checkpoint Key Duration: 6 Hours</div>
-      </div>
-      <div class="best-tag">BEST</div>
-    </div>
-
-    <!-- Work Ink SECOND -->
-    <div class="checkpoint-card"
+    <div class="checkpoint-card highlight-card"
       style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdok4rxnYMNTEAPGBs5eXk0e3frkzKnemSFg&s');"
       data-url="https://ads.luarmor.net/get_key?for=Horizon_Hub_Lootlabs-pkIcjuXfTuEc">
       <div class="checkpoint-content">
         <div class="checkpoint-name">Lootlabs</div>
         <div class="duration">1 Checkpoint Key Duration: 4 Hours</div>
       </div>
+      <div class="best-tag">BEST</div>
+    </div>
+
+    <div class="checkpoint-card"
+      id="linkvertise-card"
+      style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://media.licdn.com/dms/image/v2/D4E0BAQGbZqvPriyjiw/company-logo_200_200/company-logo_200_200/0/1701861184487/linkvertise_logo?e=2147483647&v=beta&t=z2G7POdRWNRnXfjAvg-HGrn4qms6dkRkxRW2MfBzEhE'); filter: grayscale(100%) brightness(0.6);">
+      <div class="checkpoint-content">
+        <div class="checkpoint-name">Linkvertise</div>
+        <div class="duration">1 Checkpoint Key Duration: 6 Hours</div>
+      </div>
+      <div class="discontinued-tag">DISCONTINUED</div>
     </div>
   </div>
 
@@ -239,22 +294,41 @@
       setTimeout(() => loader.classList.add("fade-out"), 600);
     });
 
-    // Redirect with countdown
+    // Get common elements once
+    const notify = document.getElementById('notify');
+    const linkvertiseCard = document.getElementById('linkvertise-card');
+
+    // --- NEW Redirect logic ---
     document.querySelectorAll('.checkpoint-card').forEach(card => {
+      // Skip the linkvertise card for redirect logic
+      if (card.id === "linkvertise-card") return; 
+
+      const url = card.dataset.url;
+      
       card.addEventListener('click', () => {
-        const url = card.dataset.url;
-        const durationText = card.querySelector('.duration');
-        let countdown = 2;
-        durationText.style.opacity = 1;
-        const interval = setInterval(() => {
-          durationText.textContent = `Redirecting in ${countdown}s...`;
-          countdown--;
-          if (countdown < 0) {
-            clearInterval(interval);
-            window.location.href = url;
-          }
-        }, 1000);
+        // Set text for redirection
+        notify.textContent = 'Redirecting...';
+        // Add redirect style and show
+        notify.classList.add('redirect');
+        notify.classList.add('show');
+        
+        // Redirect after 1 second
+        setTimeout(() => {
+          window.location.href = url;
+        }, 1000); // 1-second delay
       });
+    });
+
+    // Notify for discontinued
+    linkvertiseCard.addEventListener('click', () => {
+      // Set text for discontinuation
+      notify.textContent = 'This checkpoint is no longer supported.';
+      // Remove redirect style (if present) and show
+      notify.classList.remove('redirect');
+      notify.classList.add('show');
+      
+      // Hide after 3 seconds
+      setTimeout(() => notify.classList.remove('show'), 3000);
     });
   </script>
 </body>
