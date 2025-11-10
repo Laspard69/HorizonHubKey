@@ -179,7 +179,7 @@
     transform: translateY(0);
   }
 
-  /* Highlight for Lootlabs (now the primary card) */
+  /* Highlight for "BEST" card */
   .highlight-card {
     border: 3px solid #9b59b6;
     box-shadow: 0 0 25px rgba(155,89,182,0.6);
@@ -265,25 +265,27 @@
   </p>
 
   <div class="checkpoint-container">
+    
     <div class="checkpoint-card highlight-card"
-      style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdok4rxnYMNTEAPGBs5eXk0e3frkzKnemSFg&s');"
-      data-url="https://ads.luarmor.net/get_key?for=Horizon_Hub_Lootlabs-pkIcjuXfTuEc">
+      style="background-image: url('https://media.licdn.com/dms/image/v2/D4E0BAQGbZqvPriyjiw/company-logo_200_200/company-logo_200_200/0/1701861184487/linkvertise_logo?e=2147483647&v=beta&t=z2G7POdRWNRnXfjAvg-HGrn4qms6dkRkxRW2MfBzEhE');"
+      data-url="https://ads.luarmor.net/get_key?for=Horizon_Hub_Linkvertise-GtiNyQRETJNr"> 
       <div class="checkpoint-content">
-        <div class="checkpoint-name">Lootlabs</div>
+        <div class="checkpoint-name">Linkvertise</div>
         <div class="duration">1 Checkpoint Key Duration: 4 Hours</div>
       </div>
       <div class="best-tag">BEST</div>
     </div>
 
     <div class="checkpoint-card"
-      id="linkvertise-card"
-      style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://media.licdn.com/dms/image/v2/D4E0BAQGbZqvPriyjiw/company-logo_200_200/company-logo_200_200/0/1701861184487/linkvertise_logo?e=2147483647&v=beta&t=z2G7POdRWNRnXfjAvg-HGrn4qms6dkRkxRW2MfBzEhE'); filter: grayscale(100%) brightness(0.6);">
+      id="discontinued-card" 
+      style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANdGcTdok4rxnYMNTEAPGBs5eXk0e3frkzKnemSFg&s');"> 
       <div class="checkpoint-content">
-        <div class="checkpoint-name">Linkvertise</div>
+        <div class="checkpoint-name">Lootlabs</div>
         <div class="duration">1 Checkpoint Key Duration: 6 Hours</div>
       </div>
       <div class="discontinued-tag">DISCONTINUED</div>
     </div>
+    
   </div>
 
   <script>
@@ -296,12 +298,12 @@
 
     // Get common elements once
     const notify = document.getElementById('notify');
-    const linkvertiseCard = document.getElementById('linkvertise-card');
+    const discontinuedCard = document.getElementById('discontinued-card'); // Lootlabs is now the discontinued card
 
-    // --- NEW Redirect logic ---
+    // --- Redirect logic (works on any card *without* the discontinued-card id) ---
     document.querySelectorAll('.checkpoint-card').forEach(card => {
-      // Skip the linkvertise card for redirect logic
-      if (card.id === "linkvertise-card") return; 
+      // Skip the discontinued card
+      if (card.id === "discontinued-card") return; 
 
       const url = card.dataset.url;
       
@@ -320,7 +322,7 @@
     });
 
     // Notify for discontinued
-    linkvertiseCard.addEventListener('click', () => {
+    discontinuedCard.addEventListener('click', () => {
       // Set text for discontinuation
       notify.textContent = 'This checkpoint is no longer supported.';
       // Remove redirect style (if present) and show
